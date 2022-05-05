@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+        a{display: block;}
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script type="application/javascript" src="/socket.io/socket.io.js"></script>
+    <script>
+      const user = '<%= user %>';
+
+      // socket.emit('start user management', user)
+    </script>
+    <script src="./ejs.min.js"></script>
+    <script defer language="JavaScript" type="text/javascript" src="/index.js"></script>
+  </head>
+  <body>
+    <h1>Hallo <%= user %></h1>
+    <ul id="roomContainer">
+        <% rooms.forEach(room => { %>
+            <div><%= room %> </div>
+            <a href="http://localhost:3000/room/<%= room %>/user/<%= user %>">Join</a>
+        <% }); %>
+    </ul>
+    <form id="formCreateNewRoom" action="/room/:room/user/:user" method="POST">
+        <label for="roomName">Enter room name: </label>
+        <input type="text" name="roomName" required />
+        <input type="hidden" type="text" name="roomUser" value="<%= user %>"/>
+        <button type="submit">Create new room</button>
+    </form>
+    <div>
+      <h2>Details</h2>
+        <ol>
+          <li>You can enter a chat only once. The older socket gets disconnected</li>
+          <li>You can join multible chats at the same time. Please user the 'Open Link in new Tab' function </li>
+          <li>In the chat you get an info who is allready connected, who joines, who leaves</li>
+          <li></li>
+          <li>Make create room working</li>
+          <li>Upload über heroku.</li>
+          <li></li>
+          <li>DB Anbindung wird folgen</li>
+        </ol>
+    </div>
+  </body>
+</html>
