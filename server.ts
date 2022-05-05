@@ -7,7 +7,7 @@ require('dotenv').config();
 // import dotenv from 'dotenv' //not imported yet
 // think about git with git.ignore
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 const app: Express = express();
 app.use(express.static("public"));
