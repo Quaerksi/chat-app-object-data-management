@@ -5,6 +5,9 @@ var form = document.getElementById('form');
 var input = document.getElementById('input');
 // formLogin
 var welcomePageFormELement = document.getElementById('formLogin');
+//welcome page
+var listUserNames = document.getElementById('listUserNames');
+var infoMessage = document.getElementById('infoMessage');
 
 //rooms seen on index page
 const roomContainer = document.getElementById('roomContainer');
@@ -19,13 +22,26 @@ const appendMessage = msg => {
 
 // ********************************* user management *********************************//
 
-// console.log(`Send container: ${form}`)
+//at the welcome page
+if(listUserNames != null){
+    socket.emit('send user names');
+}
 
-// ${req.body.newUser}{
-//      socket.emit('start user management', user)
-//     console.log(`A User: ${user}`);
-// }
+socket.on('user names', users => {
 
+    while (listUserNames.lastElementChild) {
+        listUserNames.removeChild(listUserNames.lastElementChild);
+    }
+
+    users.forEach(username => {
+        let element = document.createElement('li');
+        element.innerText = username;
+        listUserNames.append(element);
+    })
+    
+}); 
+
+//in a chat room
 if(form != null){
     console.log(`Room: ${room} User: ${user}`);
 
@@ -54,12 +70,9 @@ socket.on('member gone', function(member){
 // ***************************************landing page************************************//
 
 socket.on('new room created', (room) => {
-    console.log(`Hello World, room ${room}, user ${user}`)
     let newElement = document.createElement('div');
     newElement.innerText = room;
     let newLink = document.createElement('a');
-    // href noch richtig machen !!!!!!???????????
-    // http://localhost:3000/room/<%= room %>/user/<%= user %>
     newLink.href = `http://localhost:3000/room/${room}/user/${user}`;
     newLink.innerText = 'Join';
     roomContainer.append(newElement);
@@ -67,7 +80,7 @@ socket.on('new room created', (room) => {
 });
 
 // ********************************* message handling  *********************************//
-// receive message and print it to screen
+// receive message and print it to screen in chatroom
 socket.on('chat message', function(msg) {
     appendMessage(msg);
     window.scrollTo(0, document.body.scrollHeight);
